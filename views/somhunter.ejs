@@ -375,7 +375,7 @@ function rescore() {
       // Now request new display
       showTopDisplay();
 
-      showGlobalMessage(`Rescored.`, "", 5000,"s");      
+      //showGlobalMessage(`Rescored.`, "", 2000,"s");      
     })
     .catch((e) => {
       console.log("Error: " + JSON.stringify(e.message));
@@ -557,6 +557,11 @@ function setupImageGrid(viewData) {
   let elemHtml = "";
   // Iterate over all the frames
   for (let i = 0; i < frames.length; ++i) {
+
+    if (frames[i].id == null){
+      elemHtml += getNoThumbPrototype(frames[i].src);
+      continue;
+    }
     
     let likedStr = "";
     let actionStr = `like(this, ${frames[i].id})`;
@@ -580,6 +585,11 @@ function appendImageGrid(viewData, fromIndex) {
   // Iterate over all the frames
   for (let i = fromIndex; i < frames.length; ++i) {
     
+    if (frames[i].id == null){
+      elemHtml += getNoThumbPrototype(frames[i].src);
+      continue;
+    }
+
     let likedStr = "";
     let actionStr = `like(this, ${frames[i].id})`;
     if (frames[i].liked) {
@@ -591,6 +601,34 @@ function appendImageGrid(viewData, fromIndex) {
   }
 
   elem.innerHTML = elemHtml;
+}
+
+function getNoThumbPrototype(src) {
+  return `<li 
+      class="no-frame frame-in-grid small-6 medium-4 large-2 cell
+      style="background-image: url('${src}')"
+    >
+      <div class="just-clicker">
+        <a 
+          class="button frame-in-grid-hover-btn submit-frame" 
+          title="Submit this frame.">
+          ✔
+        </a>
+
+        <a 
+          class="button frame-in-grid-hover-btn show-detail" 
+          data-open="modalDetail"
+          title="Show the detail of this frame.">
+          Detail
+        </a>
+
+        <a 
+          class="button frame-in-grid-hover-btn show-knn" 
+          title="Show most similiar frames.">
+          KNN
+        </a>
+      </div>
+    </li>`;
 }
 
 function getThumbPrototype(likedStr, actionStr, id, src) {
@@ -674,6 +712,11 @@ function putDocumentToState(viewData) {
   // -----------------------------
   // Setup query inputs
   setupQueryInputs(viewData);
+
+  // Scroll to the top
+  $('#frameGridWrapper').animate({
+      scrollTop: $("#offCanvasLeftSplit1").offset().top
+  }, 500);
 
   // -----------------------------
   // Set state

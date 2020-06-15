@@ -286,7 +286,7 @@ SomHunter::get_som_display()
 		for (size_t j = 0; j < SOM_DISPLAY_GRID_HEIGHT; ++j) {
 			if (asyncSom.map(i + SOM_DISPLAY_GRID_WIDTH * j)
 			      .empty()) {
-				ids[i + SOM_DISPLAY_GRID_WIDTH * j] = 0;
+				ids[i + SOM_DISPLAY_GRID_WIDTH * j] = IMAGE_ID_ERR_VAL;
 			} else {
 				ImageId id = scores.weighted_example(
 				  asyncSom.map(i + SOM_DISPLAY_GRID_WIDTH * j));
@@ -299,8 +299,12 @@ SomHunter::get_som_display()
 	submitter.log_show_som_display(frames, ids);
 
 	// Update context
-	for (auto id : ids)
+	for (auto id : ids){
+		if (id == IMAGE_ID_ERR_VAL)
+			continue;
+
 		shown_images.insert(id);
+	}
 	current_display = frames.ids_to_video_frame(ids);
 	current_display_type = DisplayType::DSom;
 

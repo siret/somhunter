@@ -261,7 +261,7 @@ ScoreModel::apply_bayes(std::set<ImageId> likes,
 	if (likes.empty())
 		return;
 
-	constexpr float Sigma = .1f;
+	constexpr float Sigma = .25f;
 	constexpr size_t max_others = 64;
 
 	std::vector<ImageId> others;

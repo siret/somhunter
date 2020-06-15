@@ -98,7 +98,7 @@ public:
 
 			if (q3.empty())
 				break;
-				
+
 			q3.pop();
 
 			auto vf = frames.get_frame(adept_ID);

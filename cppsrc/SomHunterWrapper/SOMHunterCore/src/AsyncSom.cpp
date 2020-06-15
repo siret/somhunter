@@ -95,12 +95,12 @@ AsyncSom::async_som_worker(AsyncSom *parent, const Config &cfg)
 		                          cfg.features_dim,
 		                        0);
 		float negAlpha = -0.01f;
-		float negRadius = 1.5f;
-		float alphasA[2] = { 0.05f, 0.02f },
+		float negRadius = 1.0f;
+		float alphasA[2] = { 0.1f, 0.05f },
 		      alphasB[2] = { negAlpha * alphasA[0],
 			             negAlpha * alphasA[1] },
 		      radiiA[2] = { float(SOM_DISPLAY_GRID_WIDTH +
-			                  SOM_DISPLAY_GRID_HEIGHT / 3),
+			                  SOM_DISPLAY_GRID_HEIGHT) / 3,
 			            0.1f },
 		      radiiB[2] = { negRadius * radiiA[0],
 			            negRadius * radiiA[1] };

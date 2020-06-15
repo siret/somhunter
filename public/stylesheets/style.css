@@ -127,6 +127,11 @@ align-items: flex-start;
 align-content: flex-start;
 }
 
+
+.frame-grid .frame-in-grid.no-frame {
+  pointer-events: none;
+}
+
 .som-grid.frame-grid .frame-in-grid {
 width: calc(100% / (64 / 8));
 height: calc(100% / (64 / 8));

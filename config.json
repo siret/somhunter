@@ -1,6 +1,6 @@
 {
   "submitter_config":{
-    "submit_to_VBS": true,
+    "submit_to_VBS": false,
     "submit_rerank_URL": "http://herkules.ms.mff.cuni.cz:8080/vbs/log",
     "submit_URL": "http://herkules.ms.mff.cuni.cz:8080/vbs/submit",
 
@@ -44,7 +44,7 @@
   "kws_file": "data/ITEC_w2vv/word2idx.txt",
 
   "display_page_size": 128,
-  "topn_frames_per_video": 6,
-  "topn_frames_per_shot": 3
+  "topn_frames_per_video": 12,
+  "topn_frames_per_shot": 6
 
 }

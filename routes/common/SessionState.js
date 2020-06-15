@@ -48,6 +48,11 @@ exports.switchScreenTo = function (state, screen, frames, targetFrame) {
     if (state.likes.includes(frames[i].id)) {
       frames[i].liked = true;
     }
+
+    // If null image
+    if (frames[i].id == null) {
+      frames[i].src = "/images/no_img.jpg";
+    }
   }
 
   state.screen = {

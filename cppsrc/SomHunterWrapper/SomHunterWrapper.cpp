@@ -168,10 +168,15 @@ SomHunterWrapper::get_display(const Napi::CallbackInfo &info)
 				napi_value obj;
 				napi_create_object(env, &obj);
 				{
-					ImageId ID{ (*it)->frame_ID };
-					bool is_liked{ (*it)->liked };
-					std::string filename{ path_prefix +
-						              (*it)->filename };
+					ImageId ID{ IMAGE_ID_ERR_VAL };
+					bool is_liked{false};
+					std::string filename{};
+
+					if ((*it) != nullptr)	{
+						ID = (*it)->frame_ID;
+						is_liked = (*it)->liked;
+						filename = path_prefix +(*it)->filename;
+					}
 
 					{
 						napi_value key;
@@ -182,8 +187,12 @@ SomHunterWrapper::get_display(const Napi::CallbackInfo &info)
 						  &key);
 
 						napi_value value;
+						if (ID == IMAGE_ID_ERR_VAL)	{
+							napi_get_null(env, &value);
+						} else {
 						napi_create_uint32(
 						  env, uint32_t(ID), &value);
+						}
 
 						napi_set_property(
 						  env, obj, key, value);

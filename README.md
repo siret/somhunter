@@ -33,7 +33,10 @@ npm run start
 
 (Optionally replace `npm` with `yarn`.)
 
-If everything goes all right, you can start browsing at http://localhost:8080/
+If everything goes all right, you can start browsing at http://localhost:8080/.
+The site is password-protected by default, you can use the default login `som`
+and password `hunter`, or set a different login in `config/user.js`.
+
 
 ### Getting the dependencies on UNIX systems
 

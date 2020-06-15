@@ -172,6 +172,11 @@ Frames::ids_to_video_frame(const std::vector<ImageId> &ids) const
 	std::vector<VideoFramePointer> res;
 	res.reserve(ids.size());
 	for (ImageId i : ids) {
+		if (i == IMAGE_ID_ERR_VAL){
+			res.push_back(nullptr);
+			continue;
+		}
+			
 		res.push_back(&get_frame(i));
 	}
 
