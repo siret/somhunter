@@ -1,0 +1,10 @@
+/node_modules
+/build
+data
+data2
+.vscode
+.vs
+output
+public
+public/export
+cppsrc

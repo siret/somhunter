@@ -1,0 +1,49 @@
+{
+  "submitter_config":{
+    "submit_to_VBS": true,
+    "submit_rerank_URL": "http://vbs.itec.aau.at:8080/vbs/log",
+    "submit_URL": "http://vbs.itec.aau.at:8080/vbs/submit",
+  
+    "team_ID": 4,
+    "member_ID": 1,
+  
+    "VBS_submit_archive_dir": "vbs-log",
+    "VBS_submit_archive_log_suffix": ".json",
+    "extra_verbose_log": false,
+  
+    "send_logs_to_server_period": 10000,
+    "log_replay_timeout": 1000
+  },
+
+  "max_frame_filename_len": 64,
+  "filename_offsets": {
+    "fr_filename_off": 6,
+    "fr_filename_vid_ID_off": 7,
+    "fr_filename_vid_ID_len": 5,
+    "fr_filename_shot_ID_off": 14,
+    "fr_filename_shot_ID_len": 5,
+    "fr_filename_frame_num_off": 42,
+    "fr_filename_frame_num_len": 8
+  },
+
+  "frames_list_file": "data/v3c1_w2vv/V3C1_20191215.keyframes.dataset",
+  "frames_path_prefix": "/images/v3c1_w2vv/thumbs/",
+
+  "features_file_data_off": 12,
+  "features_file": "data/v3c1_w2vv/V3C1_20191228.w2vv.images.normed.128pca.viretfromat",
+  "features_dim": 128,
+
+  "pre_PCA_features_dim": 2048,
+  "kw_bias_vec_file": "data/v3c1_w2vv/txt_bias-2048floats.bin",
+  "kw_scores_mat_file": "data/v3c1_w2vv/txt_weight-11147x2048floats.bin",
+  "kw_PCA_mean_vec_file": "data/v3c1_w2vv/V3C1_20191228.w2vv.pca.mean.bin",
+  "kw_PCA_mat_file": "data/v3c1_w2vv/V3C1_20191228.w2vv.pca.matrix.bin",
+  "kw_PCA_mat_dim": 128,
+
+  "kws_file": "data/v3c1_w2vv/word2idx.txt",
+
+  "display_page_size": 128,
+  "topn_frames_per_video": 3,
+  "topn_frames_per_shot": 1
+
+}

@@ -1,0 +1,16 @@
+vbs-log/
+_local
+node_modules/
+build
+data/*
+!data/ITEC_w2vv/
+.vscode/
+.vs/
+logs/*
+output/
+public/images/*
+public/export/*
+public/_thumbs/
+*.tmp
+*.log
+LOCAL_GIT_SETTINGS.md

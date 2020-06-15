@@ -1,0 +1,19 @@
+{
+    "development": {
+        "appName": "SOMHunter",
+        "appSubname": "The interactive search tool.",
+
+        "logsDir": "logs/",
+
+        "framesPathPrefix": "/thumbs/",
+
+        "autocompleteResCount": 10,
+
+        "dataConfigFilepath": "config.json",
+        "jsonIndentation": 4
+    },
+    "staging": {
+    },
+    "production": {
+    }
+}

@@ -1,0 +1,82 @@
+<!-- 
+This file is part of SOMHunter.
+ *
+Copyright (C) 2020 František Mejzlík <frankmejzlik@gmail.com>
+                   Mirek Kratochvil <exa.exa@gmail.com>
+                   Patrik Veselý <prtrikvesely@gmail.com>
+ *
+SOMHunter is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 2 of the License, or (at your option)
+any later version.
+ *
+SOMHunter is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.
+ *
+You should have received a copy of the GNU General Public License along with
+SOMHunter. If not, see <https://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title><%= global.cfg.appName %> | <%= global.cfg.appSubname %></title>
+
+  <!-- Foundation styles -->
+  <link rel="stylesheet" href="/stylesheets/foundation.css">
+
+  <!-- Main custom styles -->
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <!-- Include jQuery v3.3.1 -->
+  <script src="/javascripts/vendor/jquery.js"></script>
+</head>
+
+<body class="<%= currentPage %>">
+
+  <!-- ----------------------------------- -->
+  <!-- LEFT OFF-CANVAS MENU -->
+  <!-- ----------------------------------- -->
+  <div class="off-canvas position-left" id="offCanvasLeftSplit1" data-off-canvas>
+    <!-- Close button -->
+    <button class="close-button" aria-label="Close menu" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+
+  <!-- ----------------------------------- -->
+  <!-- RIGHT OFF-CANVAS MENU -->
+  <!-- ----------------------------------- -->
+  <div class="off-canvas position-right" id="offCanvasRightSplit2" data-off-canvas>
+    <!-- Close button -->
+    <button class="close-button" aria-label="Close menu" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+
+  <!-- ===================================== -->
+  <!-- PAGE BODY -->
+  <!-- ===================================== -->
+  <div class="off-canvas-content" data-off-canvas-content>
+
+    <!-- ----------------------------------- -->
+    <!-- NOTIFICATION SECTION: Messages & warnings -->
+    <!-- ----------------------------------- -->
+    <section class="global-messages-section grid-container">
+
+      <div class="grid-x grid-x align-center">
+        <div class="callout" id="mainGlobalMessageCont">
+          <h5 class="primary"></h5>
+          <p class="secondary"></p>
+        </div>
+      </div>
+      
+    </section>

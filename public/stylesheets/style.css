@@ -1,0 +1,497 @@
+
+/* This file is part of SOMHunter.
+ *
+ * Copyright (C) 2020 František Mejzlík <frankmejzlik@gmail.com>
+ *                    Mirek Kratochvil <exa.exa@gmail.com>
+ *                    Patrik Veselý <prtrikvesely@gmail.com>
+ *
+ * SOMHunter is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * SOMHunter is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * SOMHunter. If not, see <https://www.gnu.org/licenses/>.
+ */
+ 
+
+ body {
+  background: #cacaca;
+}
+
+.image-grid-section {
+padding: 0 !important;
+max-width: 100%;
+max-height: 100vh;
+overflow: auto;
+}
+
+.ranker-grid-section.grid-container {
+width: 100%;
+max-width: 100%;
+padding: 0;
+}
+
+.button.icon-settings:hover,
+.button.icon-settings:focus {
+opacity: 0.5;
+}
+
+h1 {
+font-size: 30px;
+}
+
+h2 {
+font-size: 26px;
+}
+
+h3 {
+font-size: 22px;
+}
+
+.button {
+opacity: 0.8;
+background-color: #acacac;
+}
+.button:hover,
+.button:focus {
+opacity: 1;
+}
+
+.ranker-left-sidebar {
+background-color: rgb(19, 19, 19);
+height: 100vh;
+}
+
+.ranker-left-sidebar p,
+.ranker-left-sidebar a,
+.ranker-left-sidebar li,
+.ranker-left-sidebar .button,
+.ranker-left-sidebar h1,
+.ranker-left-sidebar h2 {
+color: #fff;
+}
+
+.autocomplete-section {
+padding-top: 2rem;
+padding-bottom: 2rem;
+}
+
+.autocomplete-section h2 {
+text-align: center;
+text-transform: uppercase;
+margin-top: 1rem;
+}
+
+.autocomplete-section h2 {
+text-align: center;
+text-transform: uppercase;
+margin-top: 1rem;
+}
+
+.autocomplete-input-cont {
+margin-bottom: 2rem;
+}
+.text-query-input {
+margin: 0;
+}
+
+.text-query-input.left-marged {
+margin-left: 2rem;
+width: calc(100% - 2rem);
+}
+
+.autocomplete-section .inter-query-text {
+margin: 0;
+}
+
+.frame-grid {
+height: 100vh;
+position: relative;
+margin: 0;
+-webkit-box-orient: horizontal;
+-webkit-box-direction: normal;
+-ms-flex-direction: row;
+flex-direction: row;
+-ms-flex-wrap: wrap;
+flex-wrap: wrap;
+-webkit-box-align: start;
+-ms-flex-align: start;
+align-items: flex-start;
+-ms-flex-line-pack: start;
+align-content: flex-start;
+}
+
+.som-grid.frame-grid .frame-in-grid {
+width: calc(100% / (64 / 8));
+height: calc(100% / (64 / 8));
+}
+
+.frame-in-grid {
+background-size: cover;
+cursor: pointer;
+font-size: 0px;
+position: relative;
+position: relative;
+max-height: 7vw;
+background-repeat: no-repeat;
+background-position: center center;
+text-align: center;
+cursor: pointer;
+height: 16.66vh;
+}
+
+.just-clicker:after {
+content: "";
+background-image: url("../images/generic/icon_info.svg");
+position: absolute;
+top: 0;
+background-size: 40px;
+left: 0px;
+width: 100%;
+height: 100%;
+font-size: 20px;
+opacity: 0;
+background-color: transparent;
+-webkit-transition: 0s ease-in-out;
+-o-transition: 0s ease-in-out;
+transition: 0s ease-in-out;
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.just-clicker:hover:after,
+.just-clicker:focus:after {
+opacity: 1;
+}
+
+.frame-in-grid:hover .frame-in-grid-hover-btn {
+opacity: 0.4;
+}
+
+a:hover,
+a:focus {
+color: #fff;
+}
+
+.frame-in-grid .frame-in-grid-hover-btn {
+opacity: 0;
+-webkit-transition: 0.1s ease-in-out;
+-o-transition: 0.1s ease-in-out;
+transition: 0.1s ease-in-out;
+font-size: 20px;
+left: 0;
+z-index: 4;
+top: 0;
+padding: 0.6rem 0.6rem;
+position: absolute;
+font-size: 16px;
+text-align: center;
+margin: 0;
+background: #1a50f2;
+}
+
+.frame-in-grid .frame-in-grid-hover-btn:hover,
+.frame-in-grid .frame-in-grid-hover-btn:focus {
+opacity: 1;
+}
+
+/** Submit button (top-right) */
+.frame-in-grid .button.submit-frame {
+top: 0;
+left: initial;
+bottom: initial;
+right: 0;
+background: green;
+padding: 0.55rem 0.6rem;
+color: #ffff;
+}
+
+/** Detail button (top-right) */
+.frame-in-grid .button.show-detail {
+top: initial;
+left: initial;
+bottom: 0;
+right: 0;
+}
+
+/** KNN button (top-right) */
+.frame-in-grid .button.show-knn {
+top: initial;
+left: 0;
+bottom: 0;
+right: initial;
+background: #ff9933;
+}
+
+.frame-in-grid:before {
+content: "";
+position: absolute;
+left: 0;
+top: 0;
+width: 30px;
+height: 30px;
+}
+
+.frame-in-grid.liked:before {
+border-top: solid 50px #07a82f;
+border-bottom: 50px solid transparent;
+border-right: 50px solid transparent;
+}
+
+.frame-in-grid:after {
+content: "";
+position: absolute;
+top: 0;
+left: 0px;
+width: 100%;
+height: 100%;
+border: 5px solid #f00;
+opacity: 0;
+pointer-events: none;
+}
+
+.frame-in-grid:hover:after,
+.frame-in-grid:focus:after {
+-webkit-transition: 0s;
+-o-transition: 0s;
+transition: 0s;
+opacity: 1;
+}
+
+.frame-in-grid img {
+/* height: auto; */
+/* width: auto; */
+height: 7vw;
+}
+
+.tips-list {
+list-style: none;
+margin-top: 2rem;
+width: 100%;
+display: none;
+}
+
+.tips-list li {
+font-size: 20px;
+width: 100%;
+}
+
+.tips-list li span {
+color: red;
+display: block;
+text-align: center;
+width: 100%;
+}
+
+.left-marged {
+margin-left: 1rem;
+}
+/************************
+* SPECIFIC BUTTONS
+************************/
+.block-btn {
+width: 100%;
+font-size: 1.2rem;
+padding: 0.8rem 0.6rem;
+}
+
+.new-seach-btn {
+background-color: #07a82f;
+}
+
+.help-btn {
+background-color: #1a50f2;
+}
+
+.som-screen-btn {
+/*! background-color: #07a82f; */
+}
+
+.top-ranked-btn {
+}
+
+.detail-btn {
+}
+
+.rescore-btn {
+background-color: #e36e08;
+padding: 1.6rem 0.6rem;
+text-transform: uppercase;
+font-size: 1.8rem;
+}
+
+.block-btn.active {
+background-color: #07a82f;
+}
+
+.autocomplete-items {
+position: absolute;
+border: 1px solid #d4d4d4;
+border-bottom: none;
+border-top: none;
+z-index: 99;
+/*position the autocomplete items to be the same width as the container:*/
+/*! top: 40px; */
+/*! left: 0; */
+/*! right: 0; */
+text-align: left;
+width: 100%;
+}
+
+.input-cont {
+position: relative;
+}
+
+.autocomplete-items .example-images-list {
+position: absolute;
+left: 100%;
+top: 0;
+height: 100%;
+max-height: 100%;
+width: 100vw;
+display: block;
+/* width: auto; */
+/* vertical-align: top; */
+line-height: 0;
+display: none;
+}
+
+.autocomplete-items .example-images-list:after {
+content: "";
+background-color: #ff9800;
+width: 100%;
+height: 193px;
+position: absolute;
+left: 0;
+top: -39px;
+/* height: 51px; */
+z-index: -1;
+/* width: 300%; */
+}
+
+.autocomplete-items .example-images-list li {
+display: inline-block;
+width: 100px;
+height: 100%;
+/* position: relative; */
+vertical-align: top;
+margin-right: 10px;
+}
+
+.autocomplete-items .example-images-list li img {
+display: inline-block;
+/* width: 100px; */
+height: 100%;
+position: relative;
+}
+.autocomplete-items strong {
+font-weight: 900;
+color: #233656;
+}
+
+.autocomplete-items .keyword-title {
+font-size: 18px;
+display: block;
+}
+
+.autocomplete-items small {
+font-size: 13px;
+color: #545454;
+display: block;
+}
+
+.autocomplete-items .wordnet-id {
+display: none;
+}
+
+.autocomplete-items div {
+padding: 3px 10px;
+cursor: pointer;
+min-height: 60px;
+background-color: #fff;
+position: relative;
+border-bottom: 1px solid #d4d4d4;
+}
+.autocomplete-items div:hover {
+background-color: #e9e9e9;
+}
+.autocomplete-active {
+/*when navigating through the items using the arrow keys:*/
+background-color: DodgerBlue !important;
+color: #ffffff;
+}
+
+
+.off-canvas-content {
+min-height: 100vh;
+}
+.global-messages-section {
+position: relative;
+}
+
+.page-title-section {
+padding: 50px 0 50px 0;
+}
+
+.current-session-chart-const {
+max-width: 400px;
+}
+
+.current-session-chart-const canvas {
+/*! width: 800px !important; */
+/*! height: 400px !important; */
+}
+
+#mainGlobalMessageCont {
+position: fixed;
+width: 80vw;
+max-width: 800px;
+display: none;
+top: 140px;
+z-index: 5;
+text-align: center;
+}
+
+
+
+.main-image-query > div {
+justify-content: left !important;
+text-align: left;
+}
+
+.main-image-query .main-image {
+position: relative;
+
+list-style: none;
+}
+
+.main-image-query .main-image img {
+width: auto;
+height: auto;
+display: inline-block;
+max-height: 100%;
+max-height: 350px;
+}
+
+.oc-ranker-settings-left-section .medium-3 {
+width: 100%;
+}
+
+#targetImageRankOut p {
+margin: 0;
+display: inline-block;
+font-weight: 300;
+}
+
+#targetImageRankOut {
+font-weight: 600;
+margin-top: 20px;
+display: block;
+}
+
