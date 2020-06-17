@@ -1,0 +1,6 @@
+---
+Checks:          '-*,performance-*,portability-*,readability-*,clang-analyzer-*,cppcoreguidelines-*,-cppcoreguidelines-macro-usage,-cppcoreguidelines-non-private-member-variables-in-classes,-cppcoreguidelines-explicit-virtual-functions,-readability-uppercase-literal-suffix,-readability-braces-around-statements'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     none
+User:            siret

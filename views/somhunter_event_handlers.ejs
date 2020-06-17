@@ -1,0 +1,609 @@
+
+<!-- 
+This file is part of SOMHunter.
+
+Copyright (C) 2020 František Mejzlík <frankmejzlik@gmail.com>
+                   Mirek Kratochvil <exa.exa@gmail.com>
+                   Patrik Veselý <prtrikvesely@gmail.com>
+
+SOMHunter is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 2 of the License, or (at your option)
+any later version.
+
+SOMHunter is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+SOMHunter. If not, see <https://www.gnu.org/licenses/>.
+-->
+<script>
+  let vd = {};
+  vd.somhunter = <%- JSON.stringify(somhunter) %>;
+  let pageId = 0;
+  let lastPageTime = 0;
+  let pageLoadSpan = 1500;
+  let ignoreNextLike = false;
+
+
+function showNextTopDisplay(id, thisFilename) {
+  pageId++;
+  let url = "/get_top_screen?pageId=" + pageId + "&type=" + vd.somhunter.screen.type + "&frameId=" + vd.somhunter.frameContext.frameId
+  // Make the request
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+      
+      // Get updated view data
+      oldLength = vd.somhunter.screen.frames.length;
+      vd.somhunter.screen.frames = vd.somhunter.screen.frames.concat(data.viewData.somhunter.screen.frames);
+      appendImageGrid(vd, oldLength);
+
+    })
+    .catch((e) => {
+      pageId--;
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+}
+
+function showTopDisplay(type, id, thisFilename) {
+  pageId = 0;
+  if (type === undefined)
+    type = "topn"
+  let url = "/get_top_screen?pageId=" + pageId + "&type=" + type
+  if (id !== undefined)
+    url += "&frameId=" + id
+  // Make the request
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+      
+      // Get updated view data
+      viewData = data.viewData;
+      putDocumentToState(viewData);
+
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+}
+
+function showSomDisplay(id, thisFilename) {
+  pageId = 0;
+  // Make the request
+  fetch("/get_som_screen", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+      
+      // Get updated view data
+      viewData = data.viewData;
+      putDocumentToState(viewData);
+
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+}
+
+
+function putDetailModelToState(screenData) {
+  const grid = document.getElementById("videoDetailFrameGrid");
+  const frames = screenData.frames;
+
+  /*
+  screenData {
+    {
+      type: screen,
+      frames: frames,
+    }
+  } 
+  */
+  let elemHtml = "";
+  // Iterate over all the frames
+  for (let i = 0; i < frames.length; ++i) {
+    
+    let likedStr = "";
+    let actionStr = `like(this, ${frames[i].id})`;
+    if (frames[i].liked) {
+      likedStr = "liked";
+      actionStr = `like(this, ${frames[i].id})`;
+    }
+
+    elemHtml += getThumbPrototype(likedStr, actionStr, frames[i].id, frames[i].src);
+  }
+
+  grid.innerHTML = elemHtml;
+}
+
+function showVideoDetail(id, thisFilename) {
+  pageId = 0;
+  // Make the request
+  fetch("/get_frame_detail_data?frameId=" + id, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+
+      ignoreNextLike = true;
+      // Get modal data
+      putDetailModelToState(data);
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+}
+
+function rescore() {
+
+  // Get current queries
+  const q0 = document.getElementById("textQueryInput0").value;
+  const q1 = document.getElementById("textQueryInput1").value;
+
+  // Request input data
+  const reqData = {
+    q0: q0,
+    q1: q1,
+  };
+
+  // Make the request
+  fetch("rescore", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(reqData),
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+
+      // Now request new display
+      showTopDisplay();
+
+      //showGlobalMessage(`Rescored.`, "", 2000,"s");      
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+  }
+
+function like(el, frameId) {
+  if (ignoreNextLike)
+  {
+    ignoreNextLike = false;
+    return;
+  }
+
+  // Request input data
+  const reqData = {
+    frameId: frameId,
+  };
+
+  let url = "/like_frame";
+  // If unlike
+  if (el.classList.contains("liked"))
+  {
+    url = "/unlike_frame";
+  }
+
+  // Make the request
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(reqData),
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+
+      if (data.isLiked)
+      {
+        el.classList.add("liked");
+      } else {
+        el.classList.remove("liked");
+      }
+
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+}
+
+function submitImage(frameId) {
+  
+  // Request input data
+  const reqData = {
+    frameId: frameId,
+  };
+
+  // Make the request
+  fetch("/submit_frame", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(reqData),
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+
+      showGlobalMessage(`Frame '${frameId}' submitted.`, "", 5000,"s");      
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000,
+        "e"
+      );
+    });
+}
+
+
+function resetSearchSession() {
+  pageId = 0;
+  // Request input data
+  const reqData = {};
+
+  // Make the request
+  fetch("/reset_search_session", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(reqData),
+  })
+    .then((res) => {
+      if (!res.ok) { throw Error(res.statusText); }
+      return res.json()
+    })
+    .then((data) => {
+      // Handle error
+      if (data.error) {
+        throw Error(data.error.message);
+      }
+
+      // Now request new display
+      showTopDisplay();
+
+      showGlobalMessage("Search reset.", "", 5000,"s");      
+    })
+    .catch((e) => {
+      console.log("Error: " + JSON.stringify(e.message));
+      showGlobalMessage(
+        "Request failed!",
+        JSON.stringify(e.message),
+        5000
+      );
+    });
+}
+
+function setupPanelButtons(viewData) {
+  const elBtnSom = document.getElementById("btnSom");
+  const elBtnTopn = document.getElementById("btnTopn");
+
+  elBtnSom.classList.remove("active");
+  elBtnTopn.classList.remove("active");
+
+  switch (viewData.somhunter.screen.type) {
+    case "som":
+      elBtnSom.classList.add("active");
+      break;
+
+    case "topn":
+      elBtnTopn.classList.add("active");
+      break;
+  }
+}
+
+function setupImageGrid(viewData) {
+
+  const elem = document.getElementById("frameGrid");
+  const frames = viewData.somhunter.screen.frames;
+  
+  elem.classList.remove("topn-grid");
+  elem.classList.remove("som-grid");
+
+  if (viewData.somhunter.screen.type == "som")
+  {
+    elem.classList.add("som-grid");
+  } else {
+    elem.classList.add("topn-grid");
+  }
+
+  let elemHtml = "";
+  // Iterate over all the frames
+  for (let i = 0; i < frames.length; ++i) {
+
+    if (frames[i].id == null){
+      elemHtml += getNoThumbPrototype(frames[i].src);
+      continue;
+    }
+    
+    let likedStr = "";
+    let actionStr = `like(this, ${frames[i].id})`;
+    if (frames[i].liked) {
+      likedStr = "liked";
+      actionStr = `like(this, ${frames[i].id})`;
+    }
+
+    elemHtml += getThumbPrototype(likedStr, actionStr, frames[i].id, frames[i].src);
+  }
+
+  elem.innerHTML = elemHtml;
+}
+
+function appendImageGrid(viewData, fromIndex) {
+
+  const elem = document.getElementById("frameGrid");
+  const frames = viewData.somhunter.screen.frames;
+  
+  let elemHtml = elem.innerHTML;
+  // Iterate over all the frames
+  for (let i = fromIndex; i < frames.length; ++i) {
+    
+    if (frames[i].id == null){
+      elemHtml += getNoThumbPrototype(frames[i].src);
+      continue;
+    }
+
+    let likedStr = "";
+    let actionStr = `like(this, ${frames[i].id})`;
+    if (frames[i].liked) {
+      likedStr = "liked";
+      actionStr = `like(this, ${frames[i].id})`;
+    }
+
+    elemHtml += getThumbPrototype(likedStr, actionStr, frames[i].id, frames[i].src);
+  }
+
+  elem.innerHTML = elemHtml;
+}
+
+function getNoThumbPrototype(src) {
+  return `<li 
+      class="no-frame frame-in-grid small-6 medium-4 large-2 cell
+      style="background-image: url('${src}')"
+    >
+      <div class="just-clicker">
+        <a 
+          class="button frame-in-grid-hover-btn submit-frame" 
+          title="Submit this frame.">
+          ✔
+        </a>
+
+        <a 
+          class="button frame-in-grid-hover-btn show-detail" 
+          data-open="modalDetail"
+          title="Show the detail of this frame.">
+          Detail
+        </a>
+
+        <a 
+          class="button frame-in-grid-hover-btn show-knn" 
+          title="Show most similiar frames.">
+          KNN
+        </a>
+      </div>
+    </li>`;
+}
+
+function getThumbPrototype(likedStr, actionStr, id, src) {
+  return `<li 
+      class="frame-in-grid small-6 medium-4 large-2 cell
+      ${likedStr}" 
+      onclick="${actionStr}" 
+      data-frame-id="${id}"
+      style="background-image: url('${src}')"
+    >
+      <div class="just-clicker">
+        <a 
+          class="button frame-in-grid-hover-btn submit-frame" 
+          onclick="submitImage(${id});event.cancelBubble=true;" 
+          title="Submit this frame.">
+          ✔
+        </a>
+
+        <a 
+          class="button frame-in-grid-hover-btn show-detail" 
+          data-open="modalDetail"
+          onclick="showVideoDetail(${id}, '${src}');" 
+          title="Show the detail of this frame.">
+          Detail
+        </a>
+
+        <a 
+          class="button frame-in-grid-hover-btn show-knn" 
+          onclick="showTopDisplay('topknn', ${id});event.cancelBubble=true;" 
+          title="Show most similiar frames.">
+          KNN
+        </a>
+      </div>
+    </li>`;
+}
+
+function setupQueryInputs(viewData) {
+  const q0 = viewData.somhunter.textQueries.q0.value;
+  const q1 = viewData.somhunter.textQueries.q1.value;
+
+  elIn0 = document.getElementById("textQueryInput0");
+  elIn1 = document.getElementById("textQueryInput1");
+
+  elIn0.value = q0
+  elIn1.value = q1
+}
+
+
+/**
+ * This controls infinite scrolling.
+ */
+var grid = document.getElementById("frameGridWrapper");
+
+function infiniteScroll() {
+  // add more contents if user scrolled down enough and last
+  // page was loaded a second before
+  if(grid.scrollTop + 300 > grid.scrollTopMax && Date.now() > (lastPageTime + pageLoadSpan)) {
+    lastPageTime = Date.now();
+    if (vd.somhunter.screen.type == "topn" || vd.somhunter.screen.type == "topknn")
+    {
+      showNextTopDisplay();
+    }
+  }
+}
+
+grid.addEventListener("scroll", infiniteScroll, false);
+
+/**
+ * This function modifies current page HTML according to state data.
+ */
+function putDocumentToState(viewData) {
+
+  // -----------------------------
+  // Manage image grid
+  setupImageGrid(viewData);
+
+  // -----------------------------
+  // Change buttons
+  setupPanelButtons(viewData);
+
+  // -----------------------------
+  // Setup query inputs
+  setupQueryInputs(viewData);
+
+  // Scroll to the top
+  $('#frameGridWrapper').animate({
+      scrollTop: $("#offCanvasLeftSplit1").offset().top
+  }, 500);
+
+  // -----------------------------
+  // Set state
+  vd = viewData;
+}
+
+/** Put document into correct state */
+onDocumentReady(function () {
+  putDocumentToState(vd);
+
+
+  $(window).bind('mousewheel DOMMouseScroll', function(event){
+    if (event.shiftKey) {
+      if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+          // scroll up
+          console.log("playing the video back ...");
+      }
+      else {
+          // scroll down
+          console.log("playing the video forward...");
+      }
+    }
+  });
+
+});
+
+</script>

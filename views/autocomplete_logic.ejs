@@ -1,0 +1,226 @@
+<!-- 
+This file is part of SOMHunter.
+
+Copyright (C) 2020 František Mejzlík <frankmejzlik@gmail.com>
+                   Mirek Kratochvil <exa.exa@gmail.com>
+                   Patrik Veselý <prtrikvesely@gmail.com>
+
+SOMHunter is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 2 of the License, or (at your option)
+any later version.
+
+SOMHunter is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+SOMHunter. If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<script>
+  function autocomplete(inp, queryIdx) {
+  let currentFocus;
+  let lastTimeoutHandle;
+
+  inp.addEventListener("input", function (e) {
+    clearTimeout(lastTimeoutHandle);
+    lastTimeoutHandle = setTimeout(getNearKeywords, 300);
+  });
+
+  inp.addEventListener("keydown", function (e) {
+    let x = document.getElementById(this.id + "autocomplete-list");
+    
+    if (x) {
+      x = x.getElementsByTagName("div");
+    }
+    
+    // Down arrow
+    if (e.keyCode == 40) {
+      
+      currentFocus++;
+      addActive(x);
+
+    // Up arrow
+    } else if (e.keyCode == 38) {
+      
+      currentFocus--;
+      addActive(x);
+
+    // Enter
+    } else if (e.keyCode == 13) {
+      
+      e.preventDefault();
+      if (currentFocus > -1) {
+        /*and simulate a click on the "active" item:*/
+        if (x) x[currentFocus].click();
+      }
+    }
+  });
+
+  function getNearKeywords(e) {
+    let a, b, i;
+
+    // Get current value in input
+    let val = inp.value;
+
+    // Get just the last word
+    val = val.split(" ").slice(-1);
+
+    // Close any already open lists of autocompleted values
+    closeAllLists();
+
+    // If empty input
+    if (!val) {
+      // Do nothing
+      return false;
+    }
+    
+    // Set current focus to nothing
+    currentFocus = -1;
+
+    a = document.createElement("div");
+    a.setAttribute("id", "autocompleteList");
+    a.setAttribute("class", "autocomplete-items");
+
+    // Create AJAX call to get appropriate data
+    fetch(`/get_autocomplete_results?queryValue=${val}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res.json();
+      })
+      .then((data) => {
+
+        // Handle error
+        if (data.error) {
+          throw Error(data.error.message);
+        }
+
+        inp.parentNode.appendChild(a);
+
+        // For each item in the returned array
+        for (i = 0; i < data.length; i++) {
+          
+          b = document.createElement("div");
+
+          // Make the matching letters bold
+          //b.innerHTML = "<strong>" + data[i].substr(0, val.length) + "</strong>";
+          //b.innerHTML += data[i].substr(val.length);
+
+          const wordTitle = boldString(data[i].wordString, val);
+          const wordDesc = boldString(data[i].description, val);
+          const exampleImagesFilenamesArr = data[i].exampleFrames;
+
+          b.innerHTML +=
+            '\
+                <span class="keyword-title">' +
+            wordTitle +
+            "</span><small>" +
+            wordDesc +
+            "</small>\
+                <small class='wordnet-id'>" +
+            data[i].id +
+            "</small>";
+
+          let str = '<ul class="example-images-list">';
+
+          for (let ii = 0; ii < exampleImagesFilenamesArr.length; ++ii) {
+            str +=
+              "<li><img src='../images/thumbs/" +
+              exampleImagesFilenamesArr[ii] +
+              "' /></li>";
+          }
+
+          str += "</ul>";
+
+          b.innerHTML += str;
+
+          // Insert a input field that will hold the current array item's value
+          b.innerHTML +=
+            "<input type='hidden' name='keyword' value='" +
+            data[i].wordString +
+            "'>";
+          b.innerHTML +=
+            "<input type='hidden' name='wordnetId' value='" + data[i].id + "'>";
+
+          // Execute a function when someone clicks on the item value (DIV element)
+          b.addEventListener("click", function (e) {
+            
+            for (let i = 0; i < this.childNodes.length; i++) {
+              if (this.childNodes[i].className == "keyword-title") {
+                selValWord = this.childNodes[i].innerHTML;
+                continue;
+              }
+            }
+            selValWord = selValWord.replace(/(<([^>]+)>)/gi, "");
+
+
+            // Update the input value
+            let words = inp.value.split(" ");
+            words = words.slice(0, words.length - 1)
+            words.push(selValWord);
+            inp.value = words.join(" ") + " ";
+
+            // Close the list of autocompleted values,(or any other open lists of autocompleted values)
+            closeAllLists();
+          });
+
+          a.appendChild(b);
+        }
+      })
+      .catch((e) => {
+        console.log("Error: " + JSON.stringify(e.message));
+        showGlobalMessage(
+          "Request failed!",
+          JSON.stringify(e.message),
+          5000,
+          "e"
+        );
+      });
+  }
+
+  function addActive(x) {
+    if (!x) {
+      return false;
+    }
+
+    removeActive(x);
+
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = x.length - 1;
+
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+
+  function removeActive(x) {
+    for (let i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+
+  function closeAllLists(elmnt) {
+    let x = document.getElementsByClassName("autocomplete-items");
+
+    const length = x.length;
+    $(".autocomplete-items").remove();
+  }
+
+  document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+  });
+}
+
+// Call autocomplete on desired input field
+autocomplete(document.getElementById("textQueryInput0"), 0);
+autocomplete(document.getElementById("textQueryInput1"), 1);
+
+
+</script>

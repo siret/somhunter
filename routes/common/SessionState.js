@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SOMHunter. If not, see <https://www.gnu.org/licenses/>.
  */
-const { resetSearchSession } = require("./endpoints");
+const { resetSearchSession } = require("../endpoints");
 
 exports.Construct = function () {
   return {

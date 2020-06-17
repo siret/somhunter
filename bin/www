@@ -30,7 +30,7 @@
  */
 var app = require("../app");
 var http = require("http");
-var debug = require("debug")("imageranker:server");
+var debug = require("debug")("somhunter:server");
 
 /*
  * Get port from environment and store in Express.
