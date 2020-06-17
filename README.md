@@ -1,4 +1,4 @@
-# SOMHunter opensource
+# SOMHunter opensource ![Node.js CI](https://github.com/siret/somhunter/workflows/Node.js%20CI/badge.svg)
 
 This is an open-source version of the SOMHunter video search and retrieval engine, slightly simplified from the prototype that was featured at Video Browser Showdown 2020 in Daejeon, Korea (see https://videobrowsershowdown.org/ ).
 
