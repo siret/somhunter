@@ -4,14 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www somhunter",
-    "build": "node-gyp rebuild",
-    "build:dev": "node-gyp build",
-    "build:debug": "node-gyp -j 16 build --debug",
-    "rebuild:dev": "node-gyp rebuild",
-    "rebuild:debug": "node-gyp -j 16 rebuild --debug",
-    "rebuild": "node-gyp -j 16 rebuild",
-    "clean": "node-gyp clean",
-    "stop": "node ./bin/server.stop"
+    "build": "node-gyp build",
+    "rebuild": "node-gyp rebuild",
+    "build:debug": "node-gyp build --debug",
+    "rebuild:debug": "node-gyp rebuild --debug",
+    "clean": "node-gyp clean"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

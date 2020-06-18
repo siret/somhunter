@@ -27,7 +27,19 @@ the following articles helpful:
   [SOMHunter for Lifelog Search](https://dl.acm.org/doi/abs/10.1145/3379172.3391727).
   In *Proceedings of the Third Annual Workshop on Lifelog Search Challenge* (pp. 73-75).
 
-## Installation
+## Trying SOMHunter from Docker
+
+You can get a working SOMHunter copy from Docker:
+```sh
+docker pull exaexa/somhunter:v0.1
+docker run -ti --rm -p8080:8080 exaexa/somhunter:v0.1
+```
+
+After that, open your browser at http://localhost:8080, and use login `som` and password `hunter`.
+
+![SOMHunter interface](media/screenshot.jpg)
+
+## Installation from source
 
 Prerequisites:
 
@@ -49,8 +61,6 @@ npm run start
 If everything goes all right, you can start browsing at http://localhost:8080/
 . The site is password-protected by default, you can use the default login
 `som` and password `hunter`, or set a different login in `config/user.js`.
-
-![SOMHunter interface](media/screenshot.jpg)
 
 ### Getting the dependencies on UNIX systems
 
@@ -91,6 +101,15 @@ We have tested SOMHunter on Windows and several different Linux distributions,
 which should cover a majority of target environments. Please report any errors
 you encounter using the GitHub issue tracker, so that we can fix them (and
 improve the portability of SOMHunter).
+
+### Building the Docker image
+
+The installation is described in `Dockerfile`; you should be able to get a
+working, correctly tagged (and possibly customized) image by running this in
+your directory:
+```sh
+docker build -t somhunter:$(git describe --always --tags --dirty=-$USER-$(date +%Y%m%d-%H%M%S)) .
+```
 
 ## Customizing SOMHunter
 
@@ -139,4 +158,3 @@ to use a symbolic link that points to the thumbnails elsewhere, in order to
 save disk space and IO bandwidth.)
 
 Description of extracting data from custom dataset will be added promptly.
-
