@@ -63,7 +63,7 @@ apt-get install build-essential libcurl4-openssl-dev nodejs yarnpkg
 
 The build system uses `pkg-config` to find libCURL -- if that fails, either
 install the CURL pkgconfig file manually, or customize the build configuration
-in `cppsrc/SomHunterWrapper/binding.gyp` to fit your setup.
+in `core/binding.gyp` to fit your setup.
 
 Similar (similarly named) packages should be available on most other distributions.
 
@@ -83,7 +83,7 @@ vcpkg export --raw curl:x64-windows
 - copy the directory with the exported libCURL to `c:\Program Files\`.
 
 Alternatively, you can use any working development installation of libCURL by
-filling the appropriate paths in `cppsrc/SomHunterWrapper/binding.gyp`.
+filling the appropriate paths in `core/binding.gyp`.
 
 ### Build problems
 
@@ -96,10 +96,10 @@ improve the portability of SOMHunter).
 
 The program is structured as follows:
 
-- The frontend requests are routed in `app.js` to views and actions in `routes/somhunter.js`, display-specific routes are present in `routes/common/endpoints.js`
+- The frontend requests are routed in `app.js` to views and actions in `routes/somhunter.js`, display-specific routes are present in `routes/endpoints.js`
 - The views (for the browser) are rendered in `views/somhunter.ejs`
-- Node.js "frontend" communicates with C++ "backend" that handles the main data operations; the backend source code is in `cppsrc/`; the main API is in `cppsrc/SomHunterWrapper/SomHunterWrapper.h` (and `.cpp`)
-- The backend implementation is present in `cppsrc/SomHunterWrapper/SOMHunterCore/src/` which contains the following modules (`.cpp` and `.h`):
+- Node.js "frontend" communicates with C++ "backend" that handles the main data operations; the backend source code is in `core/`; the main API is in `core/SomHunterNapi.h` (and `.cpp`)
+- The backend implementation is present in `core/src/` which contains the following modules (`.cpp` and `.h`):
   - `SomHunter` -- main data-holding structure with the C++ version of the wrapper API
   - `Submitter` -- VBS API client for submitting search results for the competition, also contains the logging functionality
   - `DatasetFrames` -- loading of the dataset description (frame IDs, shot IDs, video IDs, ...)

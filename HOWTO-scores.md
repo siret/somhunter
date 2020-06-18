@@ -53,7 +53,7 @@ Relevance scores are updated everytime `rescore()` is called.
 
 We will modify `rescore` in `core/src/SomHunter.cpp` to call the customized
 function as follows:
-```
+```cpp
 void
 SomHunter::rescore(std::string text_query)
 {
