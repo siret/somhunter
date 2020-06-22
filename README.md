@@ -124,7 +124,7 @@ The program is structured as follows:
   - `Submitter` -- VBS API client for submitting search results for the competition, also contains the logging functionality
   - `DatasetFrames` -- loading of the dataset description (frame IDs, shot IDs, video IDs, ...)
   - `DatasetFeatures` -- loading of the dataset feature matrix
-  - `KeywordRanker` -- loading and application of W2VV keywords
+  - `KeywordRanker` -- loading and application of W2VV keywords (see Li, X., Xu, C., Yang, G., Chen, Z., & Dong, J. (2019, October). [W2VV++ Fully Deep Learning for Ad-hoc Video Search](https://dl.acm.org/doi/pdf/10.1145/3343031.3350906). In Proceedings of the 27th ACM International Conference on Multimedia (pp. 1786-1794).)
   - `RelevanceScores` -- maintenance of the per-frame scores and feedback-based re-ranking
   - `SOM` and `AsyncSom` -- SOM implementation, background worker that computes the SOM
 
@@ -148,7 +148,9 @@ ready to use.
 We can provide a larger pre-indexed dataset based on the [V3C1 video
 collection](https://link.springer.com/chapter/10.1007/978-3-030-05710-7_29),
 but do not provide a direct download due to licensing issues. Please contact us
-to get a downloadable link.
+to get a downloadable link. You will need to have the TRECVID data use
+agreement signed; see
+https://www-nlpir.nist.gov/projects/tv2019/data.html#licenses for details.
 
 ### Using custom video data
 

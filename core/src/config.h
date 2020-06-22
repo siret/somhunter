@@ -42,7 +42,7 @@
 #define TOPN_LIMIT 10000
 constexpr size_t DISP_TOPN_CTX_RESULT_LIMIT = 10000;
 #define TOPKNN_LIMIT 10000
-#define SOM_ITERS 100000
+#define SOM_ITERS 30000
 
 /*
  * Misc

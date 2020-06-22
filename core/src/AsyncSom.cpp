@@ -96,8 +96,8 @@ AsyncSom::async_som_worker(AsyncSom *parent, const Config &cfg)
 		                          cfg.features_dim,
 		                        0);
 		float negAlpha = -0.01f;
-		float negRadius = 1.0f;
-		float alphasA[2] = { 0.1f, 0.05f };
+		float negRadius = 1.1f;
+		float alphasA[2] = { 0.3f, 0.1f };
 		float alphasB[2] = { negAlpha * alphasA[0],
 			             negAlpha * alphasA[1] };
 		float radiiA[2] = { float(SOM_DISPLAY_GRID_WIDTH +
