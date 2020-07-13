@@ -160,4 +160,4 @@ thumbnails of the extracted video frames must be placed in directory
 to use a symbolic link that points to the thumbnails elsewhere, in order to
 save disk space and IO bandwidth.)
 
-Description of extracting data from custom dataset will be added promptly.
+Description of extracting data from custom dataset is available in directory `extractor/` with a [separate README](extractor/README.md).

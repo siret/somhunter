@@ -1,0 +1,26 @@
+transnet:
+  pb_file: "./models/transnet_model-F16_L3_S2_D256.pb"
+
+keyframes:
+  merge_threshold: 0.3
+  min_frames_in_cluster: 1
+  max_frames_in_cluster: 100
+  interpolation_bound: 10
+  visualize: false # provides extra debugging info, but the extraction is slower
+
+w2vv:
+  networks:
+    - network_path: "./models/resnext-101-1"
+      network_epoch: 40
+      normalize_inputs: true
+    - network_path: "./models/resnet-152"
+      network_epoch: 0
+      normalize_inputs: false
+  image_weight_matrix: "./models/w2vv-img_weight-2048x4096floats.npy"
+  image_bias_vector: "./models/w2vv-img_bias-2048floats.npy"
+  n_components: 128
+
+images:
+  width: 320
+  height: 180
+  quality: 70

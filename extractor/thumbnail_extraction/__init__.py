@@ -1,0 +1,1 @@
+from .thumbnail_extraction import ThumbnailExtractor
