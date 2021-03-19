@@ -26,6 +26,14 @@ the following articles helpful:
   (2020, June).
   [SOMHunter for Lifelog Search](https://dl.acm.org/doi/abs/10.1145/3379172.3391727).
   In *Proceedings of the Third Annual Workshop on Lifelog Search Challenge* (pp. 73-75).
+- Kratochvil, M., Mejzlík, F., Veselý, P., Soućek, T., & Lokoć, J. 
+  (2020, October). 
+  [SOMHunter: Lightweight Video Search System with SOM-Guided Relevance Feedback](https://dl.acm.org/doi/10.1145/3394171.3414542). 
+  In *Proceedings of the 28th ACM International Conference on Multimedia* (pp. 4481-4484).
+- Veselý, P., Mejzlík, F., & Lokoč, J. 
+  (2021, June). 
+  [SOMHunter V2 at Video Browser Showdown 2021](https://link.springer.com/chapter/10.1007/978-3-030-67835-7_45). 
+  In *International Conference on Multimedia Modeling* (pp. 461-466). Springer, Cham.
 
 ## Try SOMHunter from Docker ![image size](https://img.shields.io/docker/image-size/exaexa/somhunter) ![latest version](https://img.shields.io/docker/v/exaexa/somhunter) ![pulls](https://img.shields.io/docker/pulls/exaexa/somhunter)
 
