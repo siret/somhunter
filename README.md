@@ -1,5 +1,7 @@
 # SOMHunter opensource ![Node.js CI](https://github.com/siret/somhunter/workflows/Node.js%20CI/badge.svg)
 
+**The latest version of the SOMHunter tool is now open-source and available [here](https://github.com/siret-junior/somhunter) under the GPLv2 license.**
+
 This is an open-source version of the SOMHunter video search and retrieval
 engine, slightly simplified from the prototype that was featured at Video
 Browser Showdown 2020 in Daejeon, Korea (see https://videobrowsershowdown.org/
